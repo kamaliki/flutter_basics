@@ -3,13 +3,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
- final String uid;
+  final String uid;
   final String email;
   final String username;
   final String bio;
   final String photoUrl;
-  final List<String> followers;
-  final List<String> following;
+  final List followers;
+  final List following;
 
   const User({
     required this.uid,
@@ -21,17 +21,6 @@ class User {
     required this.following,
   });
 
-  // factory User.fromMap(Map<String, dynamic> map) {
-  //   return User(
-  //     uid: map['uid'],
-  //     email: map['email'],
-  //     username: map['username'],
-  //     bio: map['bio'],
-  //     photoUrl: map['photoUrl'],
-  //     followers: List<String>.from(map['followers']),
-  //     following: List<String>.from(map['following']),
-  //   );
-  // }
 
   Map<String, dynamic> toJson() {
     return {
