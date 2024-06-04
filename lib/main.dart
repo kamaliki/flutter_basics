@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_basics/providers/user_provider.dart';
@@ -31,43 +32,41 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Flutter Demo',
             theme: ThemeData.dark()
-                .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
+                .copyWith(scaffoldBackgroundColor: mobileBackgroundColor
+            ),
 
             // home: const ResponsiveLayout(
             //     mobileScreenLayout: MobileScreenLayout(),
             //     webScreenLayout: WebScreenLayout(),
             // )
             home: StreamBuilder(
-              stream: Firebase.initializeApp().asStream(),
+              stream: FirebaseAuth.instance.authStateChanges(),
               builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Scaffold(
-                    body: Center(
-                      child: CircularProgressIndicator(
-                        color: primaryColor,
-                      ),
-                    ),
-                  );
-                }
-                //CHECK IF ERROR
-                if (snapshot.hasError) {
-                  return Scaffold(
-                    body: Center(
+                if (snapshot.connectionState == ConnectionState.active) {
+                  // Checking if the snapshot has any data or not
+                  if (snapshot.hasData) {
+                    // if snapshot has data which means user is logged in then we check the width of screen and accordingly display the screen layout
+                    return const ResponsiveLayout(
+                      mobileScreenLayout: MobileScreenLayout(),
+                      webScreenLayout: WebScreenLayout(),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
                       child: Text('${snapshot.error}'),
-                    ),
+                    );
+                  }
+                }
+
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
                   );
                 }
 
-                //if there id no snapshot return LoginScreen
-                if (!snapshot.hasData) {
-                  return const LoginScreen();
-                }
-
-                return const ResponsiveLayout(
-                  mobileScreenLayout: MobileScreenLayout(),
-                  webScreenLayout: WebScreenLayout(),
-                );
+                return const LoginScreen();
               },
-            )));
+            ),
+        ),
+    );
   }
 }

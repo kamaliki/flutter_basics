@@ -1,51 +1,44 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
-  final String uid;
   final String email;
+  final String uid;
+  final String photoUrl;
   final String username;
   final String bio;
-  final String photoUrl;
   final List followers;
   final List following;
 
-  const User({
-    required this.uid,
-    required this.email,
-    required this.username,
-    required this.bio,
-    required this.photoUrl,
-    required this.followers,
-    required this.following,
-  });
+  const User(
+      {required this.username,
+        required this.uid,
+        required this.photoUrl,
+        required this.email,
+        required this.bio,
+        required this.followers,
+        required this.following});
 
-
-  Map<String, dynamic> toJson() {
-    return {
-      'uid': uid,
-      'email': email,
-      'username': username,
-      'bio': bio,
-      'photoUrl': photoUrl,
-      'followers': followers,
-      'following': following,
-    };
-  }
-
-  static User fromSnap( DocumentSnapshot snap){
-    var data = snap.data() as Map<String, dynamic>;
+  static User fromSnap(DocumentSnapshot snap) {
+    var snapshot = snap.data() as Map<String, dynamic>;
 
     return User(
-      uid: data['uid'],
-      email: data['email'],
-      username: data['username'],
-      bio: data['bio'],
-      photoUrl: data['photoUrl'],
-      followers: List<String>.from(data['followers']),
-      following: List<String>.from(data['following']),
+      username: snapshot["username"],
+      uid: snapshot["uid"],
+      email: snapshot["email"],
+      photoUrl: snapshot["photoUrl"],
+      bio: snapshot["bio"],
+      followers: snapshot["followers"],
+      following: snapshot["following"],
     );
   }
 
+  Map<String, dynamic> toJson() => {
+    "username": username,
+    "uid": uid,
+    "email": email,
+    "photoUrl": photoUrl,
+    "bio": bio,
+    "followers": followers,
+    "following": following,
+  };
 }

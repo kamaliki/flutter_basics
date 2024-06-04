@@ -40,14 +40,14 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   Widget build(BuildContext context) {
     //model.User user = Provider.of<UserProvider>(context).getUser;
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Mobile Screen Layout'),
-        ),
+        // appBar: AppBar(
+        //   title: const Text('Mobile Screen Layout'),
+        // ),
         body: PageView(
-          children: homeScreenItems
           physics:  const NeverScrollableScrollPhysics(),
           controller: pageController,
           onPageChanged: onPageChanged,
+          children: homeScreenItems,
         ),
         bottomNavigationBar: CupertinoTabBar(
           backgroundColor: mobileBackgroundColor,
